@@ -1,0 +1,350 @@
+
+.ch-root {
+  width: 100%;
+  margin: 0;
+  padding: 0 0 90px;
+  background: #f6f7fb;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.ch-root,
+.ch-root * {
+  box-sizing: border-box;
+}
+
+.ch-root a {
+  text-decoration: none;
+}
+
+/* TOP 6 BANNERS */
+
+.ch-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px 0 15px;
+  background: #f6f7fb;
+}
+
+.ch-banner {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: #101e47;
+}
+
+.ch-featured-grid .ch-banner {
+  aspect-ratio: 1.42 / 1;
+}
+
+.ch-banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* BLUE SECTION HEADING */
+
+.ch-heading {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  margin: 0;
+  padding: 10px 20px;
+  background: #2042a4;
+  color: #fff;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  line-height: 1.2;
+}
+
+/* PROVIDERS: 2 PER ROW */
+
+.ch-provider-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px 0 22px;
+  background: #fff;
+}
+
+.ch-provider-grid .ch-banner {
+  aspect-ratio: 1.78 / 1;
+}
+
+/* FAVOURITES: 3 PER ROW */
+
+.ch-favourites-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px 0 18px;
+  background: #fff;
+}
+
+.ch-favourite-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: #2042a4;
+}
+
+.ch-favourite-image {
+  width: 100%;
+  aspect-ratio: 1.7 / 1;
+  overflow: hidden;
+}
+
+.ch-favourite-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ch-favourite-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 5px 3px;
+  background: #2042a4;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* EXISTING CASINO CATEGORY SECTION */
+
+.ch-casino-games {
+  width: 100%;
+}
+
+.ch-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  overflow-x: auto;
+  padding: 12px 10px;
+  background: #020421;
+  scrollbar-width: none;
+}
+
+.ch-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.ch-tab {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 24px;
+  padding: 9px 17px;
+  background: transparent;
+  color: #d4d9e8;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ch-tab-active {
+  background: #fff;
+  color: #020421;
+}
+
+.ch-games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.ch-game-card {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #2042a4;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.ch-game-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.ch-game-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ch-game-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 37px;
+  padding: 6px 4px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .ch-featured-grid {
+    gap: 5px;
+    padding: 8px 0 12px;
+  }
+
+  .ch-heading {
+    min-height: 43px;
+    padding: 8px 10px;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+  }
+
+  .ch-provider-grid {
+    gap: 3px;
+    padding-top: 3px;
+    padding-bottom: 14px;
+  }
+
+  .ch-favourites-grid {
+    gap: 3px;
+    padding-top: 3px;
+    padding-bottom: 12px;
+  }
+
+  .ch-favourite-title {
+    min-height: 31px;
+    padding: 4px 2px;
+    font-size: 12px;
+  }
+
+  .ch-tabs {
+    gap: 6px;
+    padding: 9px 7px;
+  }
+
+  .ch-tab {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  .ch-games-grid {
+    gap: 7px;
+    padding: 1px;
+  }
+
+  .ch-game-card {
+    border-radius: 0px;
+  }
+
+  .ch-game-title {
+    min-height: 31px;
+    padding: 5px 3px;
+    font-size: 11px;
+  }
+}
+
+/* Screenshot reference typography */
+
+.ch-root {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: normal;
+}
+
+.ch-heading {
+  min-height: 64px;
+  padding: 10px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.8px;
+}
+
+.ch-favourite-title {
+  min-height: 49px;
+  padding: 5px 4px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.ch-tab {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ch-game-title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Screenshot-size layout: ~800px viewport */
+
+@media (max-width: 900px) {
+  .ch-heading {
+    font-size: 27px;
+    min-height: 64px;
+  }
+
+  .ch-favourite-title {
+    font-size: 22px;
+    min-height: 49px;
+  }
+
+  .ch-tab {
+    font-size: 24px;
+  }
+
+  .ch-game-title {
+    font-size: 22px;
+  }
+}
+
+/* Actual narrow mobile viewport */
+
+@media (max-width: 480px) {
+  .ch-heading {
+           font-size: 12px;
+        min-height: 20px;
+        padding: 6px 10px;
+  }
+
+  .ch-favourite-title {
+    font-size: 12px;
+    min-height: 31px;
+  }
+
+  .ch-tab {
+    font-size: 14px;
+  }
+
+  .ch-game-title {
+    font-size: 12px;
+  }
+}

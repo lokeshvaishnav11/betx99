@@ -1,0 +1,40 @@
+/* Reference-style compact Place Bet popup. Scoped to pb-* to avoid global CSS conflicts. */
+.pb-overlay.backdrop-custom { position: fixed; inset: 0; background: rgba(0,0,0,.53); z-index: 9998; }
+.pb-popup.place-bet { position: fixed; z-index: 9999; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(96vw, 775px); max-height: 94vh; overflow-y: auto; margin: 0; border: 0; border-radius: 8px 8px 0 0; box-shadow: 0 6px 25px rgba(0,0,0,.25); font-family: inherit; font-style: normal; color: #242424; background: #fff; }
+.pb-popup .pb-header { display: flex; align-items: center; justify-content: space-between; height: 70px; padding: 0 20px; background: #fff; border-bottom: 2px solid #ddd; }
+.pb-popup .pb-heading { font-size: 30px; font-weight: 700; line-height: 1.1; }
+.pb-popup .pb-close { appearance: none; border: 0; background: none; color: #000; padding: 0 0 4px; font-size: 42px; font-weight: 300; line-height: 1; cursor: pointer; }
+.pb-popup.pb-back .pb-body { background: #73b9e9; }
+.pb-popup.pb-lay .pb-body { background: #f7a9bb; }
+.pb-popup .pb-body { padding: 20px; margin: 0; }
+.pb-popup .pb-selection-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 65px; margin-bottom: 16px; }
+.pb-popup .pb-selection { font-size: 22px; line-height: 1.2; font-weight: 700; overflow-wrap: anywhere; }
+.pb-popup .pb-odds { width: 140px; height: 66px; flex: 0 0 140px; padding: 8px; border: 2px solid #aaa; border-radius: 5px; background: rgba(255,255,255,.65); color: #555; font-size: 24px; font-weight: 400; }
+.pb-popup .pb-action-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 16px; }
+.pb-popup .pb-stake-input { width: 100%; min-width: 0; height: 68px; padding: 8px; border: 2px solid #888; border-radius: 5px; background: #fff; color: #111; font-size: 24px; }
+.pb-popup .pb-submit, .pb-popup .pb-cancel { width: 100%; min-height: 68px; border: 0; border-radius: 10px; color: #fff; font-size: 26px; font-weight: 500; cursor: pointer; }
+.pb-popup .pb-submit { background: #38aa70; }
+.pb-popup.pb-lay .pb-submit { background: #7ca65a; }
+.pb-popup .pb-cancel { background: #f00000; }
+.pb-popup .pb-submit:disabled { opacity: .65; cursor: wait; }
+.pb-popup .pb-stake-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px 15px; }
+.pb-popup .pb-stake-preset { height: 62px; min-width: 0; padding: 0 6px; border: 0; border-radius: 0; background: #17386d; color: #fff; font-size: 27px; font-weight: 700; line-height: 1; cursor: pointer; }
+.pb-popup .pb-bottom-row { display: flex; justify-content: flex-end; min-height: 72px; align-items: flex-end; }
+.pb-popup .pb-edit { min-width: 114px; height: 62px; border: 0; border-radius: 10px; background: #00b900; color: #fff; font-size: 27px; font-weight: 500; cursor: pointer; }
+.pb-popup .pb-edit-hint { margin: 8px 0 0; font-size: 12px; }
+@media (max-width: 600px) {
+ .pb-popup.place-bet { width: calc(100vw - 16px); }
+ .pb-popup .pb-header { height: 44px; padding: 0 12px; }
+ .pb-popup .pb-heading { font-size: 20px; }
+ .pb-popup .pb-close { font-size: 30px; }
+ .pb-popup .pb-body { padding: 12px; }
+ .pb-popup .pb-selection-row { min-height: 44px; margin-bottom: 10px; }
+ .pb-popup .pb-selection { font-size: 15px; }
+ .pb-popup .pb-odds { width: 74px; flex-basis: 74px; height: 42px; font-size: 16px; }
+ .pb-popup .pb-action-row { gap: 10px; margin-bottom: 10px; }
+ .pb-popup .pb-stake-input, .pb-popup .pb-submit, .pb-popup .pb-cancel { height: 42px; min-height: 42px; font-size: 16px; border-radius: 5px; }
+ .pb-popup .pb-stake-grid { gap: 6px 8px; }
+ .pb-popup .pb-stake-preset { height: 38px; font-size: 18px; }
+ .pb-popup .pb-bottom-row { min-height: 46px; }
+ .pb-popup .pb-edit { min-width: 66px; height: 38px; border-radius: 6px; font-size: 17px; }
+}

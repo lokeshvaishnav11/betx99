@@ -1,0 +1,200 @@
+/* Scoped match detail typography; preserve website font when already configured */
+.betx-detail-root, .betx-fancy-root, .betx-fancy-container {
+  --betx-blue: #193e7d;
+  --betx-pink: #f5a8ba;
+  --betx-sky: #74b9eb;
+  --betx-ink: #28343a;
+  width: 100%;
+  min-width: 0;
+  color: var(--betx-ink);
+  font-family: 'Poppins', Arial, sans-serif;
+  font-style: normal;
+}
+.betx-detail-root *, .betx-fancy-root * { box-sizing: border-box; }
+.betx-detail-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  /* background: var(--betx-blue); */
+}
+.betx-detail-toolbar button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-right: 2px solid #183e7d;
+  cursor: pointer;
+}
+
+.betx-detail-toolbar button:last-child {
+  border-right: none;
+}
+.betx-main-markets, .betx-fancy-container, .betx-fancy-root { margin: 0; padding: 0; }
+.betx-market-heading {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 8px 12px;
+  margin: 0;
+  color: #fff;
+  background: var(--betx-blue);
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+.betx-fancy-section { margin: 0 0 3px; background: #edf0f2; }
+.betx-fancy-columns {
+  display: grid;
+  grid-template-columns: 60% 20% 20%;
+  min-height: 56px;
+  border-bottom: 2px solid white;
+}
+.betx-fancy-name-column { background: #edf0f2; }
+.betx-fancy-no-column, .betx-fancy-yes-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.betx-fancy-no-column { background: var(--betx-pink); }
+.betx-fancy-yes-column { background: var(--betx-sky); }
+.betx-fancy-list, .betx-main-markets { width: 100%; }
+.betx-my-bets { scroll-margin-top: 65px; }
+.betx-secondary-bets { margin-top: 10px; }
+@media (max-width: 480px) {
+  .betx-market-heading { min-height: 40px; padding: 7px 8px; font-size: 17px; }
+  .betx-fancy-columns { min-height: 42px; }
+  .betx-fancy-no-column, .betx-fancy-yes-column { font-size: 19px; }
+  .betx-detail-toolbar button { font-size: 14px; }
+}
+
+
+/* Screenshot-matched compact odds and fancy rows.
+   Styles scoped to BETX wrappers; original bet handlers remain intact. */
+.betx-detail-root, .betx-fancy-root, .betx-odds-root {
+  font-family: inherit; /* use the website's actual font */
+  font-style: normal;
+}
+.betx-odds-root, .betx-odds-root *, .betx-fancy-root, .betx-fancy-root * { box-sizing: border-box; }
+.betx-odds-market { margin: 0 0 4px; padding: 0; border: 0; width: 100%; overflow: hidden; }
+.betx-odds-root .betx-odds-title {
+  display: flex; align-items: center; gap: 8px;
+  background: #193e7d !important; color: #fff !important;
+  min-height: 42px; padding: 6px 10px !important; margin: 0 !important;
+  font-family: inherit; font-size: 16px !important; font-weight: 700; line-height: 1.3;
+}
+.betx-odds-root .betx-odds-title .float-right { margin-left: auto; font-size: 11px; font-weight: 500; }
+.betx-odds-root .betx-odds-title .game-rules-icon { color: #fff; }
+.betx-odds-root .betx-odds-header,
+.betx-odds-root .betx-odds-row,
+.betx-fancy-root .betx-fancy-row {
+  display: flex !important; width: 100%; margin: 0 !important;
+  align-items: stretch; float: none !important; clear: both;
+}
+.betx-odds-root .betx-odds-header > .country-name,
+.betx-odds-root .betx-odds-row > .country-name,
+.betx-fancy-root .betx-fancy-row > .country-name {
+  flex: 0 0 60% !important; width: 60% !important; max-width: 60% !important;
+  float: none !important; min-width: 0; margin: 0 !important;
+  background: #edf0f2 !important; color: #28343a !important;
+  padding: 7px 9px !important; border: 1px solid #d4d8da !important;
+  font-family: inherit; font-size: 14px !important; font-weight: 600;
+  line-height: 1.3;
+}
+.betx-odds-root .betx-odds-row > .country-name .team-name b { color: #28343a !important; font-size: 14px !important; }
+.betx-odds-root .betx-odds-header > .country-name { color: #f13c40 !important; font-size: 12px !important; }
+.betx-odds-root .betx-odds-header > .back,
+.betx-odds-root .betx-odds-header > .lay,
+.betx-fancy-root .betx-fancy-row > .lay,
+.betx-fancy-root .betx-fancy-row > .back {
+  flex: 0 0 20% !important; width: 20% !important; max-width: 20% !important;
+  float: none !important; min-width: 0; margin: 0 !important;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 6px 2px !important; border: 1px solid #fff !important;
+  font-family: inherit; font-size: 15px !important; font-weight: 700; line-height: 1.2;
+  color: #28343a !important;
+}
+.betx-odds-root .betx-odds-header > .back,
+.betx-fancy-root .betx-fancy-yes { background: #72b8e8 !important; }
+.betx-odds-root .betx-odds-header > .lay,
+.betx-fancy-root .betx-fancy-no { background: #f5a8ba !important; }
+.betx-odds-root .betx-odds-row { min-height: 62px; background: #edf0f2; }
+.betx-odds-root .betx-odds-header { min-height: 42px; }
+.betx-odds-root .betx-odds-row > .country-name p { margin: 2px 0 0; font-size: 11px; }
+/* AvailableToBackLay has its own price-box markup: retain original layout until that component is provided. */
+.betx-fancy-root .betx-fancy-section { margin-bottom: 3px; }
+.betx-fancy-root .betx-market-heading {
+  min-height: 40px !important; padding: 6px 10px !important;
+  font-size: 16px !important; font-weight: 700; line-height: 1.25;
+}
+.betx-fancy-root .betx-fancy-columns { min-height: 40px !important; }
+.betx-fancy-root .betx-fancy-no-column,
+.betx-fancy-root .betx-fancy-yes-column { font-size: 16px !important; }
+.betx-fancy-root .betx-fancy-row { min-height: 64px; }
+.betx-fancy-root .betx-fancy-row > .country-name { font-size: 14px !important; }
+.betx-fancy-root .betx-fancy-row > .country-name p { margin: 0 !important; }
+.betx-fancy-root .betx-fancy-row > .country-name span { color: #28343a; }
+.betx-fancy-root .betx-fancy-row > .lay .odd,
+.betx-fancy-root .betx-fancy-row > .back .odd { font-size: 16px !important; font-weight: 700; }
+.betx-fancy-root .betx-fancy-row > .lay > span:not(.odd),
+.betx-fancy-root .betx-fancy-row > .back > span:not(.odd) { font-size: 11px !important; font-weight: 500; }
+.betx-fancy-root .betx-fancy-row > .min-max { display: none !important; }
+.betx-fancy-root .betx-fancy-item { width: 100%; }
+.betx-fancy-root .betx-fancy-row-wrap { width: 100%; }
+.betx-fancy-root .betx-fancy-row.suspended,
+.betx-odds-root .betx-odds-row.suspended { position: relative; }
+/* Existing theme suspension overlay continues to determine the text/status. */
+@media (max-width: 480px) {
+  .betx-odds-root .betx-odds-title, .betx-fancy-root .betx-market-heading { font-size: 15px !important; }
+  .betx-odds-root .betx-odds-row > .country-name,
+  .betx-fancy-root .betx-fancy-row > .country-name { font-size: 13px !important; }
+  .betx-odds-root .betx-odds-row > .country-name .team-name b { font-size: 13px !important; }
+  .betx-odds-root .betx-odds-header > .back,
+  .betx-odds-root .betx-odds-header > .lay,
+  .betx-fancy-root .betx-fancy-row > .lay,
+  .betx-fancy-root .betx-fancy-row > .back { font-size: 14px !important; }
+}
+
+/* Market title / cashout badge / min-max: compact screenshot layout */
+.betx-odds-root .betx-odds-title .betx-market-name {
+  min-width: 0;
+  flex: 0 1 auto;
+  font: inherit;
+}
+.betx-odds-root .betx-odds-title .betx-market-rules {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 12px;
+}
+.betx-odds-root .betx-odds-title .betx-cashout-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 5px 8px;
+  min-height: 30px;
+  background: #009b08;
+  color: white;
+  font-family: inherit;
+  font-size: 14px !important;
+  font-weight: 700;
+  line-height: 1.2;
+  border-radius: 0;
+}
+.betx-odds-root .betx-odds-header > .country-name .betx-market-limits {
+  color: #ef4040 !important;
+  font-family: inherit;
+  font-size: 12px !important;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.betx-odds-root .betx-limit-separator { margin-left: 5px; }
+@media (max-width: 480px) {
+  .betx-odds-root .betx-odds-title .betx-cashout-badge { font-size: 12px !important; padding: 4px 7px; min-height: 27px; }
+  .betx-odds-root .betx-odds-header > .country-name .betx-market-limits { font-size: 11px !important; }
+}

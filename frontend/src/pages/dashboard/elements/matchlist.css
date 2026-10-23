@@ -1,0 +1,591 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* MAIN CONTAINER */
+
+.mlm-container {
+  width: 100%;
+  padding: 0 0 10px;
+  margin: 0;
+  background: #f6f7fa;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+.mlm-container *,
+.mlm-container *::before,
+.mlm-container *::after {
+  box-sizing: border-box;
+}
+
+/* MATCH WRAPPER */
+
+.mlm-match-wrapper {
+  width: 100%;
+  margin-bottom: 25px;
+  background: #f1f1f1;
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.10);
+}
+
+/* MATCH CARD */
+
+.mlm-match-card {
+  width: 100%;
+  min-height: 119px;
+  padding: 11px 14px 17px;
+  background: #f1f1f1;
+}
+
+/* TOP ROW */
+
+.mlm-top-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 1fr) auto auto;
+  align-items: center;
+  column-gap: 20px;
+  width: 100%;
+  min-height: 38px;
+}
+
+/* STATUS */
+
+.mlm-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  width: max-content;
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: 11px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.mlm-status-live {
+  background: #278329;
+  color: #ffffff;
+}
+
+.mlm-status-upcoming {
+  background: #d0d0d0;
+  color: #050505;
+}
+
+/* MATCH DATE */
+
+.mlm-match-date {
+  display: block;
+  color: #ff0000;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* CRICKET TAG */
+
+.mlm-sport-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  height: 36px;
+  overflow: hidden;
+  border: 2px solid #173b79;
+  border-radius: 11px;
+  background: #f1f1f1;
+  white-space: nowrap;
+}
+
+.mlm-exchange-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 100%;
+  background: #173b79;
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.mlm-sport-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 11px;
+  color: #252525;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* MATCH NAME */
+
+.mlm-match-name-row {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.mlm-match-name {
+  display: block;
+  width: 100%;
+  color: #173b79 !important;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.6px;
+  text-decoration: none !important;
+  cursor: pointer;
+  overflow-wrap: break-word;
+}
+
+.mlm-match-name:hover,
+.mlm-match-name:focus {
+  color: #173b79 !important;
+  text-decoration: none !important;
+}
+
+/* ODDS */
+
+.mlm-odds-section {
+  width: 100%;
+  background: #ffffff;
+}
+
+.mlm-odds-section .coupon-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.mlm-odds-heading td {
+  padding: 7px 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* EMPTY STATE */
+
+.mlm-no-match {
+  padding: 20px;
+  text-align: center;
+  color: #555;
+  font-size: 16px;
+  background: #f1f1f1;
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 600px) {
+  .mlm-match-wrapper {
+    margin-bottom: 16px;
+  }
+
+  .mlm-match-card {
+    min-height: 85px;
+    padding: 9px 10px 12px;
+  }
+
+  .mlm-top-row {
+    grid-template-columns: minmax(75px, 1fr) auto auto;
+    column-gap: 7px;
+    min-height: 30px;
+  }
+
+  .mlm-status {
+    min-height: 29px;
+    padding: 0 7px;
+    border-radius: 8px;
+    font-size: clamp(12px, 3vw, 17px);
+  }
+
+  .mlm-match-date {
+    font-size: clamp(10px, 2.8vw, 16px);
+  }
+
+  .mlm-sport-tag {
+    height: 29px;
+    border-radius: 8px;
+    border-width: 1.5px;
+  }
+
+  .mlm-exchange-icon {
+    width: 25px;
+    font-size: 17px;
+  }
+
+  .mlm-sport-name {
+    padding: 0 6px;
+    font-size: 15px;
+  }
+
+  .mlm-match-name-row {
+    margin-top: 10px;
+  }
+
+  .mlm-match-name {
+    font-size: clamp(17px, 4.2vw, 23px);
+    line-height: 1.35;
+    letter-spacing: -0.3px;
+  }
+}
+
+/* EXTRA SMALL MOBILE */
+
+@media (max-width: 360px) {
+  .mlm-top-row {
+    column-gap: 4px;
+  }
+
+  .mlm-match-date {
+    font-size: 10px;
+  }
+
+  .mlm-sport-name {
+    font-size: 13px;
+    padding: 0 4px;
+  }
+
+  .mlm-exchange-icon {
+    width: 22px;
+    font-size: 15px;
+  }
+}
+
+/* Screenshot matching corrections */
+
+.mlm-container {
+  background: #f6f7fa !important;
+}
+
+.mlm-match-wrapper {
+  margin: 0 0 25px !important;
+  background: #f1f1f1 !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.09) !important;
+}
+
+.mlm-match-card {
+  min-height: 119px !important;
+  padding: 11px 14px 17px !important;
+}
+
+.mlm-top-row {
+  display: grid !important;
+  grid-template-columns: minmax(130px,1fr) auto auto !important;
+  column-gap: 20px !important;
+  align-items: center !important;
+  min-height: 38px !important;
+}
+
+.mlm-status {
+  min-height: 36px !important;
+  padding: 0 10px !important;
+  font-size: 24px !important;
+  border-radius: 11px !important;
+}
+
+.mlm-match-date {
+  font-size: 23px !important;
+  font-weight: 400 !important;
+  color: #ff0000 !important;
+}
+
+.mlm-sport-tag {
+  height: 36px !important;
+  border-radius: 11px !important;
+}
+
+.mlm-exchange-icon {
+  width: 39px !important;
+  font-size: 25px !important;
+}
+
+.mlm-sport-name {
+  font-size: 23px !important;
+  padding: 0 11px !important;
+}
+
+.mlm-match-name-row {
+  margin-top: 12px !important;
+}
+
+.mlm-match-name {
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  color: #173b79 !important;
+}
+
+/* Original screenshot mein odds nahi hain */
+.mlm-odds-section {
+  display: none !important;
+}
+
+/* Mobile proportional scaling */
+@media (max-width: 600px) {
+  .mlm-match-card {
+    min-height: 85px !important;
+    padding: 9px 10px 12px !important;
+  }
+
+  .mlm-top-row {
+    grid-template-columns: minmax(75px,1fr) auto auto !important;
+    column-gap: 7px !important;
+  }
+
+  .mlm-status {
+    min-height: 29px !important;
+    padding: 0 7px !important;
+    font-size: clamp(12px,3vw,17px) !important;
+  }
+
+  .mlm-match-date {
+    font-size: clamp(10px,2.8vw,16px) !important;
+  }
+
+  .mlm-sport-tag {
+    height: 29px !important;
+  }
+
+  .mlm-exchange-icon {
+    width: 25px !important;
+    font-size: 17px !important;
+  }
+
+  .mlm-sport-name {
+    font-size: 15px !important;
+    padding: 0 6px !important;
+  }
+
+  .mlm-match-name {
+    font-size: clamp(17px,4.2vw,23px) !important;
+  }
+}
+
+/* MATCH LIST - SCREENSHOT STYLE */
+
+.bhm-list {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: #f5f6fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bhm-list,
+.bhm-list * {
+  box-sizing: border-box;
+}
+
+/* CARD */
+
+.bhm-card {
+  width: 100%;
+  min-height: 120px;
+  margin: 0 0 25px;
+  padding: 11px 14px 15px;
+  background: #f1f1f1;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* TOP ROW */
+
+.bhm-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+/* STATUS */
+
+.bhm-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.bhm-live {
+  color: #fff;
+  background: #28852d;
+}
+
+.bhm-upcoming {
+  color: #000;
+  background: #d1d1d1;
+}
+
+/* DATE */
+
+.bhm-date {
+  margin-left: auto;
+  color: #f00000;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+/* CRICKET BADGE */
+
+.bhm-cricket {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 36px;
+  overflow: hidden;
+  border: 2px solid #173b79;
+  border-radius: 10px;
+  background: #f1f1f1;
+}
+
+.bhm-e {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 37px;
+  height: 100%;
+  background: #173b79;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.bhm-sport {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  color: #252525;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+/* MATCH NAME */
+
+.bhm-match-name {
+  display: block;
+  width: 100%;
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #173b79;
+  font-family: inherit;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* EMPTY */
+
+.bhm-empty {
+  padding: 18px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* MOBILE - REALISTIC FONT SIZING */
+
+@media (max-width: 600px) {
+  .bhm-card {
+    min-height: 86px;
+    margin-bottom: 14px;
+    padding: 9px 10px 12px;
+  }
+
+  .bhm-card-top {
+    gap: 6px;
+  }
+
+  .bhm-status {
+    min-height: 27px;
+    padding: 2px 7px;
+    border-radius: 7px;
+    font-size: 13px;
+  }
+
+  .bhm-date {
+    font-size: 12px;
+    letter-spacing: -0.2px;
+  }
+
+  .bhm-cricket {
+    height: 18px;
+    border-width: 1.5px;
+    border-radius: 7px;
+  }
+
+  .bhm-e {
+    width: 24px;
+    font-size: 13px;
+  }
+
+  .bhm-sport {
+    padding: 0 9px;
+    font-size: 12px;
+  }
+
+  .bhm-match-name {
+    margin-top: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.25px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 380px) {
+  .bhm-card {
+    padding: 8px;
+  }
+
+  .bhm-card-top {
+    gap: 4px;
+  }
+
+  .bhm-status {
+    font-size: 12px;
+    padding: 2px 5px;
+  }
+
+  .bhm-date {
+    font-size: 10px;
+  }
+
+  .bhm-e {
+    width: 21px;
+    font-size: 14px;
+  }
+
+  .bhm-sport {
+    font-size: 12px;
+    padding: 0 9px;
+  }
+
+  .bhm-match-name {
+    font-size: 15px;
+  }
+}
