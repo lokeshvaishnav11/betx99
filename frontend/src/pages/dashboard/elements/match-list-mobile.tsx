@@ -165,7 +165,7 @@ const MatchListMobile: React.FC<MatchListMobileProps> = ({
             new Date(match.matchDateTime).getTime() <= Date.now();
 
           return (
-            <div className="bhm-card" key={match.matchId}>
+            <div className="bhm-card" key={match.matchId}  onClick={() => currentMatch(match)}>
               <div className="bhm-card-top">
                 <span
                   className={`bhm-status ${

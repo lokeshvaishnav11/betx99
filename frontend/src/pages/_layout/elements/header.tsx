@@ -211,7 +211,7 @@ const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({})
             <div className="d-flex align-items-center justify-content-between flex-wrap">
               {/* Logo */}
               <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize: "27px"}}>
-                <CustomLink to="/" className="d-flex logo align-items-center">
+                <CustomLink to="/match/4" className="d-flex logo align-items-center">
                   <img
                     src="/imgs/logobet2.png"
                     className="img-fluid "
