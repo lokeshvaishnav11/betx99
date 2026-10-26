@@ -1644,9 +1644,9 @@ const getMatches = async () => {
 // =====================================================
 
 const FANCY_APIS = [
-  "https://api.a2zlive.shop",
+  // "https://api.a2zlive.shop",
   // "https://sixapi.vkmster.com",
-  "https://api.star-99.com",
+  // "https://api.star-99.com",
   "https://api.betx99.co"
 ];
 
@@ -1727,34 +1727,25 @@ const groupFancyByMatch = (list) => {
 // PROVIDER RESULT
 // =====================================================
 
-const getProviderResult = async (
-  matchId
-) => {
+const getProviderResult = async (matchId) => {
   try {
-    const { data } = await provider.get(
-      "",
+    const { data } = await axios.get(
+      `http://165.232.177.161:3088/data/v1?sportsid=4&gmid=${matchId}&key=lokesh8279`,
       {
-        params: {
-          sportsid: 4,
-          gmid: matchId,
-          key: PROVIDER_QUERY_KEY,
+        headers: {
+          "x-api-key": "1cfdeb5a7b55d02111f3e2bd324f609f2330c928",
+          "x-api-secret":
+            "0e3be4c11c551261575a87b50a0b14da1c87c50aada2770c765a1ed6f2d5b84b",
         },
       }
     );
 
-    // Same path as original code
     return data?.markets || [];
-  } catch (error) {
-    console.error(
-      "Provider Error:",
-      matchId,
-      error?.message || error
-    );
-
+  } catch (e) {
+    console.log("Provider Error", matchId, e.message);
     return [];
   }
 };
-
 // =====================================================
 // DECLARE FANCY RESULT
 // =====================================================

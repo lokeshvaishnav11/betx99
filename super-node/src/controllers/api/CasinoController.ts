@@ -1304,18 +1304,18 @@ const resultDetail = async (slug: string, mid: string): Promise<boolean> => {
 
       // await axios.post("http://localhost:3010/api/save-casino-match",convertResult)
       await axios.post(
-        "https://api.a2zlive.shop/api/save-casino-match",
+        "https://api.betx99.co/api/save-casino-match",
         convertResult
       );
-      await axios.post(
-        "https://api.star-99.com/api/save-casino-match",
-        convertResult
-      );
+      // await axios.post(
+      //   "https://api.star-99.com/api/save-casino-match",
+      //   convertResult
+      // );
 
-       await axios.post(
-        "https://sixapi.vkmster.com/api/save-casino-match",
-        convertResult
-      );
+      //  await axios.post(
+      //   "https://sixapi.vkmster.com/api/save-casino-match",
+      //   convertResult
+      // );
 
       return true;
     } else {
