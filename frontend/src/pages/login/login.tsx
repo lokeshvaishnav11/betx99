@@ -435,9 +435,9 @@ const Login: React.FC = () => {
           }));
         }
       })
-      .catch((error) => {
-        console.error("IP API error:", error);
-      });
+      // .catch((error) => {
+      //   console.error("IP API error:", error);
+      // });
 
     return () => {
       active = false;

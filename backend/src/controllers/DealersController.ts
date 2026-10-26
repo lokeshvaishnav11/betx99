@@ -491,7 +491,7 @@ export class DealersController extends ApiController {
       //   json: () => res, // dummy implementation for json
       // }
 
-      await axios.post("https://api.Betx99live.shop/api/user-account-balance", {
+      await axios.post("https://api.betx99.co/api/user-account-balance", {
         userId: newUser._id,
         parentUserId: parentUser._id,
         amount: sendamount,
