@@ -326,11 +326,13 @@ class SportsController extends ApiController {
         selectionId: 1,
         runnerName: match.name.split(" v ")[0]?.trim(),
         sortPriority: 1,
+        handicap: 0,
       },
       {
         selectionId: 2,
         runnerName: match.name.split(" v ")[1]?.trim(),
         sortPriority: 2,
+        handicap: 0,
       },
     ],
     isActive: true,
