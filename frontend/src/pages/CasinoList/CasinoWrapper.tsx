@@ -572,7 +572,7 @@ const CasinoWrapper = (props: any) => {
                       // src={newtv}
                       // src={`https://cricketid.xyz/casino-tv?id=${gameId}`}
 
-                      src={`https://tv.777exch.live/${gameId}`}
+                      src={`https://a2zlive.shop/casino-iframe-tv/${gameId}`}
                       // src={`https://sfront.starrexch.melok/casino-tv?id=${gameId}`}
                     ></iframe>
                   )}
@@ -707,7 +707,7 @@ const CasinoWrapper = (props: any) => {
                         // src={`https://casino-stream-v2.cricketid.xyz/casino-tv?id=${gameId}`}
 
                         // src={`https://live.cricketid.xyz/casino-tv?id=${gameId}`}
-                      src={`https://tv.777exch.live/${gameId}`}
+                      src={`https://a2zlive.shop/casino-iframe-tv/${gameId}`}
                                             // src={`https://cricketid.xyz/casino-tv?id=${gameId}`}
 
                         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
