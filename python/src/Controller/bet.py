@@ -796,41 +796,129 @@ def getcurrentodds(market_id, type):
         return error({}, "Invalid Api Response")
 
 
-def checkMarketOddsConditions(market_id, market_name, selection_id, is_back, odds, selection_name):
+def checkMarketOddsConditions(
+    market_id,
+    market_name,
+    selection_id,
+    is_back,
+    odds,
+    selection_name
+):
+    # ---------------------------------------
+    # CUSTOM TOSS MARKET
+    # ---------------------------------------
+
+    if str(market_name).strip().lower() == "toss":
+
+        # Toss market ID validate
+        if not str(market_id).startswith("toss_"):
+            return "Bet is not acceptable. Invalid Toss market."
+
+        # Toss mein sirf Lagai (Back) allowed
+        if is_back not in (True, 1, "true", "True"):
+            return "Bet is not acceptable. Toss Lay not allowed."
+
+        # Toss mein sirf dono team selections
+        if str(selection_id) not in ("1", "2"):
+            return "Bet is not acceptable. Invalid Toss selection."
+
+        # Fixed Toss odds: 95 = 1.95
+        try:
+            requested_odds = float(odds)
+        except (TypeError, ValueError):
+            return "Bet is not acceptable. Invalid Toss odds."
+
+        if abs(requested_odds - 1.95) > 0.000001:
+            return "Bet is not acceptable. Toss odds must be 1.95."
+
+        print("Toss bet accepted:", {
+            "market_id": market_id,
+            "selection_id": selection_id,
+            "is_back": is_back,
+            "odds": requested_odds
+        })
+
+        # Existing function ki tarah successful validation
+        return None
+
+    # ---------------------------------------
+    # EXISTING MATCH ODDS / BOOKMAKER
+    # ---------------------------------------
+
     current_odds = getcurrentodds(market_id, market_name)
+
     print(current_odds)
     print("current_odds hello my name is mathatma gandhi")
-    if not current_odds or ('sports' not in current_odds) or (current_odds.get('sports') is not None and len(current_odds['sports']) <= 0):
+
+    if (
+        not current_odds
+        or 'sports' not in current_odds
+        or (
+            current_odds.get('sports') is not None
+            and len(current_odds['sports']) <= 0
+        )
+    ):
         return 'Bet is not acceptable. Odds not found'
+
     else:
         currentsports = current_odds['sports']
+
         current_runners = currentsports.get('runners', [])
+
         print(current_runners)
         print("current_runners")
-        filter_runners = [item for item in current_runners if str(item.get(
-            'selectionId')) == str(selection_id)]
+
+        filter_runners = [
+            item for item in current_runners
+            if str(item.get('selectionId')) == str(selection_id)
+        ]
+
         if filter_runners and filter_runners[0]:
+
             market_status = filter_runners[0].get('status')
+
             if market_status in ['ACTIVE', 'OPEN']:
-                odds_data = filter_runners[0]['ex']['availableToBack'] if is_back else filter_runners[0]['ex']['availableToLay']
-                # print(odds_data)
+
+                odds_data = (
+                    filter_runners[0]['ex']['availableToBack']
+                    if is_back
+                    else filter_runners[0]['ex']['availableToLay']
+                )
+
                 if odds_data and len(odds_data) > 0:
-                    maximum_odds = max(odds_item['price']
-                                       for odds_item in odds_data)
+
+                    maximum_odds = max(
+                        odds_item['price']
+                        for odds_item in odds_data
+                    )
+
                     print(maximum_odds)
-                    minimumodds = min(odds_item['price']
-                                      for odds_item in odds_data)
+
+                    minimumodds = min(
+                        odds_item['price']
+                        for odds_item in odds_data
+                    )
+
+                    # Existing validation unchanged
                     # if odds > maximum_odds and is_back:
                     #     return f"{odds} is not valid."
+
                     # if odds < minimumodds and is_back is not True:
                     #     return f"{odds} is not valid."
+
                 else:
                     return 'No available odds.'
+
             elif market_status == 'SUSPENDED':
                 print("hello world my bet is suspended")
-                return f"{selection_name} market is Suspended.hello world my bet is suspended"
+                return (
+                    f"{selection_name} market is Suspended."
+                    "hello world my bet is suspended"
+                )
+
             elif market_status == 'CLOSED':
                 return f"{selection_name} market is Closed."
+
         else:
             return 'Market Suspended.'
 

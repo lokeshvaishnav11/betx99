@@ -470,7 +470,7 @@ const Login: React.FC = () => {
 
     redirectTimer.current = setTimeout(() => {
       navigate.go("/match/4");
-    }, 1500);
+    }, 900);
   }, [userState, socketUser, navigate]);
 
   useEffect(() => {

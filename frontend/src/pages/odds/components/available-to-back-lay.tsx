@@ -1,193 +1,14 @@
-// import React from "react";
-// import { IBetOn, IBetType } from "../../../models/IBet";
-// import IRunner from "../../../models/IRunner";
-// import IMarket, { OddsType } from "../../../models/IMarket";
-// import { betPopup } from "../../../redux/actions/bet/betSlice";
-// import { selectCurrentMatch } from "../../../redux/actions/sports/sportSlice";
-// import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-// import authService from "../../../services/auth.service";
-// import { nFormatter } from "../../../utils/helper";
-// import { selectUserData } from "../../../redux/actions/login/loginSlice";
-// import { RoleType } from "../../../models/User";
-// // import { isMobile } from "react-device-detect";
-
-// // const isMobile = true;
-
-// type Props = {
-//   selections: any;
-//   selectionsPrev: any;
-//   runner: IRunner;
-//   market: IMarket;
-// };
-
-
-// export const AvailableToBackLay = React.memo(
-
-//   ({ selections, market, runner }: Props) => {
-//     const dispatch = useAppDispatch();
-//     const getCurrentMatch = useAppSelector(selectCurrentMatch);
-//     const userState = useAppSelector(selectUserData);
-
-//     // console.log(selections,"selection" , runner,"runner" , market , "makrkr");
-//     const onBet = (isBack = false, back: { price: number; size: number }) => {
-//       const ipAddress = authService.getIpAddress();
-//       if (market.oddsType == OddsType.BM && back.size == 0) return;
-//       if (
-//         back.price > 0 &&
-//         back.size &&
-//         userState.user.role === RoleType.user
-//       ) {
-//         dispatch(
-//           betPopup({
-//             isOpen: true,
-//             betData: {
-//               isBack,
-//               // odds: parseFloat(back.price.toFixed(4)),
-//               odds: market.marketName == "Bookmaker" ? parseFloat(back.price.toFixed(4)) : parseFloat(back.price.toFixed(4)),
-//               volume: back.size,
-//               marketId: market.marketId,
-//               marketName: market.marketName,
-//               matchId: market.matchId,
-//               selectionName: runner.runnerName,
-//               selectionId: runner.selectionId,
-//               pnl: 0,
-//               stack: 0,
-//               currentMarketOdds: back.price,
-//               eventId: market.sportId,
-//               exposure: -0,
-//               ipAddress: ipAddress,
-//               type: IBetType.Match,
-//               matchName: getCurrentMatch.name,
-//               betOn: IBetOn.MATCH_ODDS,
-//               oddsType: market.oddsType,
-//             },
-//           })
-//         );
-//       }
-//     };
-
-
-//     const availableToBack = () => {
-//       return selections?.availableToBack?.map((back: any, index: number) => {
-//         const i = 2 - index;
-//         const cls = index === 2 ? "back" : `back${i}`;
-//         const blinkCls = back.changed ? "blink" : "";
-//         if (market.oddsType == OddsType.BM && index !== 2) return;
-//         const classforbox =
-//           (market.oddsType != OddsType.BM)
-//             ? "box-1"
-//             : "box-2";
-
-
-
-//         //          // Decide what to display based on index
-//         // let displayPrice = "";
-//         // if (index === 2) {
-//         //   displayPrice =
-//         //     market.oddsType === OddsType.B
-//         //       ? back.price || "-"
-//         //       : (back.price * 100 - 100).toFixed() || "-";
-//         // }
-
-//         return (
-//           <div
-//             onClick={() => onBet(true, back)}
-//             key={index}
-//             className={`${classforbox}  text-center ${cls} ${blinkCls}`}
-//           >
-
-//             <span className="odd d-block">
-//               {market.oddsType == OddsType.BM
-//                 ? (back.price * 100 - 100).toFixed(0)
-//                   ? (back.price * 100 - 100).toFixed(0)
-//                   : "-"
-//                 : (back.price * 100 - 100).toFixed(0)
-//                   ? (back.price * 100 - 100).toFixed(0)
-//                   : "-"}
-//             </span>
-
-//             {/* <span className="odd d-block">{displayPrice}</span> */}
-
-//             {/* <span className="d-block">
-//               {back.size ? nFormatter(back.size, 1) : "-"}
-//             </span> */}
-//           </div>
-//         );
-//       });
-//     };
-
-//     const availableToLay = () => {
-//       return selections?.availableToLay?.map((lay: any, index: number) => {
-//         const i = index;
-//         const cls = index === 0 ? "lay" : `lay${i}`;
-//         const blinkCls = lay.changed ? "blink" : "";
-//         if (market.oddsType == OddsType.BM && index != 0) return;
-//         const classforbox =
-//           (market.oddsType != OddsType.BM)
-//             ? "box-1"
-//             : "box-2";
-
-
-
-//         //          // Determine what to show
-//         // let displayPrice = "";
-//         // if (index === 0) {
-//         //   displayPrice =
-//         //     market.oddsType === OddsType.B
-//         //       ? lay.price || "-"
-//         //       : lay.price || "-";
-//         // }
-
-
-
-//         return (
-//           <div
-//             onClick={() => onBet(false, lay)}
-//             key={index}
-//             className={`${classforbox}   text-center ${cls} ${blinkCls}`}
-//           >
-
-
-//             <span className="odd d-block" style={{
-//               width: "80px",   // pehle chhoti thi, isse wide ho jaayegi
-//               // display: "inline-block",
-//             }}>
-//               {market.oddsType == OddsType.BM
-//                 ? (lay.price * 100 - 100).toFixed(0)
-//                   ? (lay.price * 100 - 100).toFixed(0)
-//                   : "-"
-//                 : (lay.price * 100 - 100).toFixed(0)
-//                   ? (lay.price * 100 - 100).toFixed(0)
-//                   : "-"}
-//             </span>
-
-
-//             {/* <span className="odd d-block">{displayPrice}</span> */}
-//             {/* <span className="d-block">
-//               {lay.size ? nFormatter(lay.size, 1) : "-"}
-//             </span> */}
-//           </div>
-//         );
-//       });
-//     };
-
-//     return (
-//       <>
-//         {availableToBack()}
-//         {availableToLay()}
-//       </>
-//     );
-//   }
-// );
-
-
 import React from "react";
+
 import { IBetOn, IBetType } from "../../../models/IBet";
 import IRunner from "../../../models/IRunner";
 import IMarket, { OddsType } from "../../../models/IMarket";
+
 import { betPopup } from "../../../redux/actions/bet/betSlice";
+
 import { selectCurrentMatch } from "../../../redux/actions/sports/sportSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+
 import authService from "../../../services/auth.service";
 import { selectUserData } from "../../../redux/actions/login/loginSlice";
 import { RoleType } from "../../../models/User";
@@ -199,44 +20,128 @@ type Props = {
   market: IMarket;
 };
 
-export const AvailableToBackLay = React.memo(({ selections, market, runner }: Props) => {
-  const dispatch = useAppDispatch();
-  const getCurrentMatch = useAppSelector(selectCurrentMatch);
-  const userState = useAppSelector(selectUserData);
+type OddsItem = {
+  price: number;
+  size: number;
+  changed?: boolean;
+};
 
-  // NEW LOGIC → if total available rows < 2, then allow suspension on >100 odds
-  const allowSuspension =(market.runners.length) <3;
-  // console.log(allowSuspension,"aaaaa",market.runners.length)
+export const AvailableToBackLay = React.memo(
+  ({ selections, market, runner }: Props) => {
+    const dispatch = useAppDispatch();
 
-  const onBet = (isBack = false, back: { price: number; size: number }) => {
-    const ipAddress = authService.getIpAddress();
-    if (market.oddsType === OddsType.BM && back.size === 0) return;
-       const odds = back.price;
-     if (allowSuspension && odds > 100 ) {
-    return; // ❌ Don't allow bet on suspended odds
-    }
+    const getCurrentMatch = useAppSelector(
+      selectCurrentMatch
+    );
 
-    console.log(back,"Lokesh")
+    const userState = useAppSelector(
+      selectUserData
+    );
 
-    if ((back.price ) >= 1 && back.size && userState.user.role === RoleType.user  || !isBack &&(back.price ) >=1 && back.size && userState.user.role === RoleType.user) {
+    // ----------------------------------------
+    // CUSTOM TOSS MARKET
+    // ----------------------------------------
+
+    const isTossMarket =
+      market.marketName?.toLowerCase() === "toss" &&
+      String(market.marketId) === `toss_${market.matchId}`;
+
+    const TOSS_PRICE = 95;
+    const TOSS_SIZE = 100000;
+
+    // Toss mein sirf BACK 95.
+    const tossSelections = {
+      availableToBack: [
+        {
+          price: TOSS_PRICE,
+          size: TOSS_SIZE,
+          changed: false,
+        },
+      ],
+
+      availableToLay: [],
+    };
+
+    const currentSelections = isTossMarket
+      ? tossSelections
+      : selections;
+
+    // Existing markets ke liye suspension logic.
+    const allowSuspension =
+      !isTossMarket &&
+      (market.runners?.length || 0) < 3;
+
+    // ----------------------------------------
+    // BET POPUP
+    // ----------------------------------------
+
+    const onBet = (
+      isBack: boolean,
+      back: OddsItem
+    ) => {
+      // Toss mein Lay betting allowed nahi.
+      if (isTossMarket && !isBack) {
+        return;
+      }
+
+      if (
+        market.oddsType === OddsType.BM &&
+        back.size === 0
+      ) {
+        return;
+      }
+
+      const price = Number(back.price);
+      const size = Number(back.size);
+
+      if (!Number.isFinite(price) || !Number.isFinite(size)) {
+        return;
+      }
+
+      if (size <= 0 || price < 1) {
+        return;
+      }
+
+      if (allowSuspension && price > 100) {
+        return;
+      }
+
+      if (userState?.user?.role !== RoleType.user) {
+        return;
+      }
+
+      const ipAddress = authService.getIpAddress();
+
+      // Display 95 -> Actual decimal odds 1.95
+      const decimalOdds = isTossMarket
+        ? 1.95
+        : parseFloat(((price + 100) / 100).toFixed(4));
+
       dispatch(
         betPopup({
           isOpen: true,
+
           betData: {
             isBack,
-            odds: parseFloat(((back.price +100)/100).toFixed(4)),
-            volume: back.size,
+            odds: decimalOdds,
+            volume: size,
+
             marketId: market.marketId,
             marketName: market.marketName,
             matchId: market.matchId,
+
             selectionName: runner.runnerName,
             selectionId: runner.selectionId,
+
             pnl: 0,
             stack: 0,
-            currentMarketOdds: (back.price +100)/100,
+
+            currentMarketOdds: decimalOdds,
+
             eventId: market.sportId,
             exposure: 0,
             ipAddress,
+
             type: IBetType.Match,
             matchName: getCurrentMatch?.name,
             betOn: IBetOn.MATCH_ODDS,
@@ -244,66 +149,156 @@ export const AvailableToBackLay = React.memo(({ selections, market, runner }: Pr
           },
         })
       );
-    }
-  };
+    };
 
-  const availableToBack = () => {
-    return selections?.availableToBack?.map((back: any, index: number) => {
-      const i = 2 - index;
-      const cls = index === 2 ? "back" : `back${i}`;
-      const blinkCls = back.changed ? "blink" : "";
-      if (market.oddsType === OddsType.BM && index !== 2) return;
+    // ----------------------------------------
+    // AVAILABLE TO BACK (LAGAI)
+    // ----------------------------------------
 
-      const classforbox = market.oddsType !== OddsType.BM ? "box-1" : "box-2";
+    const availableToBack = () => {
+      return currentSelections?.availableToBack?.map(
+        (back: OddsItem, index: number) => {
+          // Toss ka Back box Bookmaker jaisa.
+          const cls = isTossMarket
+            ? "back"
+            : index === 2
+            ? "back"
+            : `back${2 - index}`;
 
-      return (
-        <div
-          onClick={() => onBet(true, back)}
-          key={index}
-          className={`${classforbox} text-center ${cls} ${blinkCls}`}
-        >
-          <span className="odd d-block">
-            {(() => {
-              const odds = back.price 
-              if (allowSuspension && (odds > 100 || odds ==1)|| allowSuspension && odds ==0) return "0";
-              return odds.toFixed(0) || "-";
-            })()}
-          </span>
-        </div>
+          const blinkCls = back.changed ? "blink" : "";
+
+          if (
+            !isTossMarket &&
+            market.oddsType === OddsType.BM &&
+            index !== 2
+          ) {
+            return null;
+          }
+
+          const classforbox =
+            isTossMarket || market.oddsType === OddsType.BM
+              ? "box-2"
+              : "box-1";
+
+          const price = Number(back.price);
+
+          const suspended =
+            !isTossMarket &&
+            allowSuspension &&
+            (price > 100 || price === 1 || price === 0);
+
+          const displayPrice = isTossMarket
+            ? "95"
+            : suspended
+            ? "0"
+            : Number.isFinite(price)
+            ? price.toFixed(0)
+            : "-";
+
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                if (suspended) return;
+                onBet(true, back);
+              }}
+              className={`${classforbox} text-center ${cls} ${blinkCls}`}
+              style={{
+                cursor: suspended ? "not-allowed" : "pointer",
+              }}
+            >
+              <span className="odd d-block">
+                {displayPrice}
+              </span>
+            </div>
+          );
+        }
       );
-    });
-  };
+    };
 
-  const availableToLay = () => {
-    return selections?.availableToLay?.map((lay: any, index: number) => {
-      const cls = index === 0 ? "lay" : `lay${index}`;
-      const blinkCls = lay.changed ? "blink" : "";
-      if (market.oddsType === OddsType.BM && index !== 0) return;
+    // ----------------------------------------
+    // AVAILABLE TO LAY (KHAI)
+    // ----------------------------------------
 
-      const classforbox = market.oddsType !== OddsType.BM ? "box-1" : "box-2";
+    const availableToLay = () => {
+      // Toss mein Khai box Bookmaker jaisa,
+      // lekin odds nahi aur click disabled.
+      if (isTossMarket) {
+        return (
+          <div
+            className="box-2 text-center lay"
+            style={{
+              cursor: "not-allowed",
+              opacity: 0.65,
+            }}
+          >
+            <span className="odd d-block">—</span>
+          </div>
+        );
+      }
 
-      return (
-        <div
-          onClick={() => onBet(false, lay)}
-          key={index}
-          className={`${classforbox} text-center ${cls} ${blinkCls}`}
-        >
-          <span className="odd d-block" style={{ width: "67px" }}>
-            {(() => {
-              const odds = lay.price 
-              if (allowSuspension && odds > 100 || allowSuspension && odds ==0) return "0";
-              return odds.toFixed(0) || "-";
-            })()}
-          </span>
-        </div>
+      return currentSelections?.availableToLay?.map(
+        (lay: OddsItem, index: number) => {
+          const cls =
+            index === 0
+              ? "lay"
+              : `lay${index}`;
+
+          const blinkCls = lay.changed ? "blink" : "";
+
+          if (
+            market.oddsType === OddsType.BM &&
+            index !== 0
+          ) {
+            return null;
+          }
+
+          const classforbox =
+            market.oddsType !== OddsType.BM
+              ? "box-1"
+              : "box-2";
+
+          const price = Number(lay.price);
+
+          const suspended =
+            allowSuspension &&
+            (price > 100 || price === 0);
+
+          const displayPrice = suspended
+            ? "0"
+            : Number.isFinite(price)
+            ? price.toFixed(0)
+            : "-";
+
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                if (suspended) return;
+                onBet(false, lay);
+              }}
+              className={`${classforbox} text-center ${cls} ${blinkCls}`}
+              style={{
+                cursor: suspended ? "not-allowed" : "pointer",
+              }}
+            >
+              <span
+                className="odd d-block"
+                style={{ width: "67px" }}
+              >
+                {displayPrice}
+              </span>
+            </div>
+          );
+        }
       );
-    });
-  };
+    };
 
-  return (
-    <>
-      {availableToBack()}
-      {availableToLay()}
-    </>
-  );
-});
+    return (
+      <>
+        {availableToBack()}
+        {availableToLay()}
+      </>
+    );
+  }
+);

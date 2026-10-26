@@ -30,6 +30,7 @@ interface IMatch {
   offPlayBookMinLimit?: number
   offPlayBookMaxLimit?: number
   resultstring: string
+  btid?: string
 }
 
 interface IMatchModel extends IMatchSetting, Document {}
@@ -63,6 +64,7 @@ const MatchSchema = new Schema(
     offPlayBookMinLimit: Number,
     offPlayBookMaxLimit: Number,
     resultstring:{type:String,default:""},
+    btid: { type: String },
   },
   {
     timestamps: true,

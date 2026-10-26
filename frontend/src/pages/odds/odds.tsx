@@ -274,6 +274,56 @@ const Odds = () => {
                 style={{ width: "100%", height: "250px" }}
                 // src={`${tvUrl}${currentMatch?.matchId}`}
                 // src={`https://playg3.livestream11.com/user/526414545/unknown/27.0.178.13/c590458e-6d81-450e-8a6d-119bc2234267`}
+                 src={`https://video.proexch.in/tv/v4/stream/${currentMatch?.btid}`}
+                                  // src={`https://uhdmovies.online/sports-stream?btid=${currentMatch?.matchId}`}
+
+
+              ></iframe>
+              LIVE TV
+            </div>
+          )}
+          {isMobile && (
+            <div className="card-body p0">
+              <iframe
+                style={{ width: "100%", height: "250px" }}
+                // src={`${tvUrl}${currentMatch?.matchId}`}
+             
+                 src={`https://video.proexch.in/tv/v4/stream/${currentMatch?.btid}`}
+              ></iframe>
+            </div>
+          )}
+        </div>
+      )
+    );
+  };
+
+    const otherTv2 = () => {
+    const tvUrl =
+      currentMatch && currentMatch.sportId == "4"
+        ? "https://livestream-v3-iframe.akamaized.uk/?eventid="
+        : "https://livestream-v3-iframe.akamaized.uk/?eventid=";
+    // : 'https://hr08bets.in/sports-stream-live/index.html?eventid='
+    return (
+      !currentMatch?.isT10 && (
+        <div className="card m-b-10" style={{ border: "0px none" }}>
+          {!isMobile ? (
+            <div className="card-header">
+              <h6 onClick={() => setIsTvShow(!isTvShow)} className="card-title">
+                Live Match
+                <span className="float-right">
+                  <i className="fa fa-tv" /> live stream started
+                </span>
+              </h6>
+            </div>
+          ) : (
+            ""
+          )}
+          {!isMobile && isTvShow && (
+            <div className="card-body p0">
+              <iframe
+                style={{ width: "100%", height: "250px" }}
+                // src={`${tvUrl}${currentMatch?.matchId}`}
+                // src={`https://playg3.livestream11.com/user/526414545/unknown/27.0.178.13/c590458e-6d81-450e-8a6d-119bc2234267`}
                  src={`https://tv.777exch.live/sports/${currentMatch?.matchId}`}
                                   // src={`https://uhdmovies.online/sports-stream?btid=${currentMatch?.matchId}`}
 
@@ -297,6 +347,7 @@ const Odds = () => {
     );
   };
   const { currentMatch, markets, fancies } = marketDataList;
+  console.log(currentMatch, "current match is here in odds page");
 
   const id: any = currentMatch?.matchId;
 
@@ -461,6 +512,8 @@ const Odds = () => {
         userRole={userState?.user?.role}
         matchedMatch={matchedMatch}
         otherTv={otherTv}
+         otherTv2={otherTv2}
+
       />
 
       {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}
@@ -484,6 +537,7 @@ const Odds = () => {
         markets={markets}
         matchedMatch={matchedMatch}
         otherTv={otherTv}
+          otherTv2={otherTv2}
       />{" "}
       {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}
     </>

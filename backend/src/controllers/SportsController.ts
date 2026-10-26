@@ -129,6 +129,7 @@ class SportsController extends ApiController {
           isBookMaker,
           isT10: isT10 || isT10Fancy,
           resultstring: "",
+          btid: match.btid,
          
         }
 
@@ -300,6 +301,105 @@ class SportsController extends ApiController {
       })
   }
 
+
+
+  async bookmakermarketesData(match: IMatch) {
+  const markets = await sportsService.getBookmakerMarkets(match);
+
+  console.log(match, "match");
+
+  // -----------------------------------
+  // 1. SAVE CUSTOM TOSS MARKET
+  // -----------------------------------
+
+  const tossMarketId = `toss_${match.matchId}`;
+
+  const tossMarketData: IMarket = {
+    seriesId: match.seriesId,
+    sportId: match.sportId,
+    matchId: match.matchId,
+    marketId: tossMarketId,
+    marketName: "Toss",
+    marketStartTime: match.matchDateTime,
+    runners: [
+      {
+        selectionId: 1,
+        runnerName: match.name.split(" v ")[0]?.trim(),
+        sortPriority: 1,
+      },
+      {
+        selectionId: 2,
+        runnerName: match.name.split(" v ")[1]?.trim(),
+        sortPriority: 2,
+      },
+    ],
+    isActive: true,
+    oddsType: OddsType.B,
+  };
+
+  await Market.findOneAndUpdate(
+    {
+      marketId: tossMarketId,
+      matchId: match.matchId,
+    },
+    {
+      $set: tossMarketData,
+    },
+    {
+      upsert: true,
+      new: true,
+    }
+  );
+
+  // -----------------------------------
+  // 2. SAVE ORIGINAL BOOKMAKER MARKET
+  // -----------------------------------
+
+  if (!markets?.data?.sports?.length) {
+    return true;
+  }
+
+  let bookmakerSaved = false;
+
+  for (const market of markets.data.sports) {
+    if (market.marketName !== "Bookmaker") continue;
+
+    if (bookmakerSaved) break;
+
+    const marketsData: IMarket = {
+      seriesId: match.seriesId,
+      sportId: match.sportId,
+      matchId: match.matchId,
+      marketId: market.marketId,
+      marketName: "Bookmaker",
+      marketStartTime: market.marketStartTime,
+      runners: market.runners.sort(
+        (a: any, b: any) => a.sortPriority - b.sortPriority
+      ),
+      isActive: true,
+      oddsType: OddsType.BM,
+    };
+
+    await Market.findOneAndUpdate(
+      {
+        marketId: market.marketId,
+        matchId: match.matchId,
+      },
+      {
+        $set: marketsData,
+      },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
+
+    bookmakerSaved = true;
+  }
+
+  return true;
+}
+
   // async  bookmakermarketesData(match: IMatch) {
   //   const markets = await sportsService.getBookmakerMarkets(match)
   //   // console.log(markets.data.sports, "markets data from backend ibn ths codew sw")
@@ -341,45 +441,60 @@ class SportsController extends ApiController {
   //   return false
   // }
 
-  async bookmakermarketesData(match: IMatch) {
-    const markets = await sportsService.getBookmakerMarkets(match);
+  // async bookmakermarketesData(match: IMatch) {
+  //   const markets = await sportsService.getBookmakerMarkets(match);
+  //   console.log(match,"match")
 
-    if (!markets?.data?.sports?.length) return false;
+  //     // const marketsData: IMarket = {
+  //     //   seriesId: match.seriesId,
+  //     //   sportId: match.sportId,
+  //     //   matchId: match.matchId,
+  //     //   marketId: market.marketId,
+  //     //   marketName: "Bookmaker",
+  //     //   marketStartTime: market.marketStartTime,
+  //     //   runners: market.runners.sort(
+  //     //     (a: any, b: any) => a.sortPriority - b.sortPriority
+  //     //   ),
+  //     //   isActive: true,
+  //     //   oddsType: OddsType.BM,
+  //     // };
 
-    let bookmakerSaved = false;
+  //   if (!markets?.data?.sports?.length) return false;
 
-    for (const market of markets.data.sports) {
-      // ✅ ONLY BOOKMAKER
-      if (market.marketName !== "Bookmaker") continue;
+  //   let bookmakerSaved = false;
 
-      // ✅ already one bookmaker saved → ignore others
-      if (bookmakerSaved) break;
+  //   for (const market of markets.data.sports) {
+  //     // ✅ ONLY BOOKMAKER
+  //     if (market.marketName !== "Bookmaker") continue;
 
-      const marketsData: IMarket = {
-        seriesId: match.seriesId,
-        sportId: match.sportId,
-        matchId: match.matchId,
-        marketId: market.marketId,
-        marketName: "Bookmaker",
-        marketStartTime: market.marketStartTime,
-        runners: market.runners.sort(
-          (a: any, b: any) => a.sortPriority - b.sortPriority
-        ),
-        isActive: true,
-        oddsType: OddsType.BM,
-      };
+  //     // ✅ already one bookmaker saved → ignore others
+  //     if (bookmakerSaved) break;
 
-      await Market.findOneAndUpdate(
-        { marketId: market.marketId, matchId: match.matchId },
-        marketsData,
-        { upsert: true, new: true }
-      );
+  //     const marketsData: IMarket = {
+  //       seriesId: match.seriesId,
+  //       sportId: match.sportId,
+  //       matchId: match.matchId,
+  //       marketId: market.marketId,
+  //       marketName: "Bookmaker",
+  //       marketStartTime: market.marketStartTime,
+  //       runners: market.runners.sort(
+  //         (a: any, b: any) => a.sortPriority - b.sortPriority
+  //       ),
+  //       isActive: true,
+  //       oddsType: OddsType.BM,
+  //     };
 
-      bookmakerSaved = true;
-    }
+  //     await Market.findOneAndUpdate(
+  //       { marketId: market.marketId, matchId: match.matchId },
+  //       marketsData,
+  //       { upsert: true, new: true }
+  //     );
 
-    return bookmakerSaved;
-  }
+  //     bookmakerSaved = true;
+  //   }
+
+  //   return bookmakerSaved;
+  // }
 
 
   async t10MarketesData(match: IMatch) {
@@ -1511,7 +1626,7 @@ class SportsController extends ApiController {
       const matchIds = alreadyAdded.map((match: any) => match.matchId)
 
       const response = await axios.get(
-       "http://64.227.139.183:3088/sportapi/match-list?sportsid=4&key=lokesh8279",
+       "http://64.227.139.183:3088/data/test",
         {
           headers: {
             "x-api-key": "1cfdeb5a7b55d02111f3e2bd324f609f2330c928",
@@ -1547,6 +1662,7 @@ class SportsController extends ApiController {
                     seriesId: s.cid.toString(),
                     sportId: EventTypeID,
                     active: matchIds.includes(parseInt(cc.gmid)),
+                    btid: cc.btid,
                   }))
                 )
               ) || [];
@@ -1559,6 +1675,7 @@ class SportsController extends ApiController {
   ...(series?.data?.data?.t1 || []),
   ...(series?.data?.data?.t2 || []),
 ].map((s: any) => {
+  console.log(s, "s is here")
   return {
     event: {
       id: s.gmid,
@@ -1578,6 +1695,7 @@ class SportsController extends ApiController {
     seriesId: s.cid.toString(),
     sportId: EventTypeID,
     active: matchIds.includes(parseInt(s.gmid)),
+        btid:s.btid,
   };
 });
           }

@@ -175,6 +175,14 @@ const MatchListMobile: React.FC<MatchListMobileProps> = ({
                   {isLive ? "Live" : "Upcoming"}
                 </span>
 
+                 <span
+                  className={`bhm-status ${
+                    isLive ? "bhm-live" : "bhm-upcoming"
+                  }`}
+                >
+                 TV <i className="fa fa-tv" style={{ marginLeft: "5px" }} />
+                </span>
+
                 <span className="bhm-date">
                   {moment(match.matchDateTime).format(
                     "MMM DD YYYY h:mmA"

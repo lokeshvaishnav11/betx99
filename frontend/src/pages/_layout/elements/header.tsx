@@ -222,6 +222,12 @@ const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({})
                 {/* A2Z */}
               </div>
 
+
+               <p className="mb-1 fw-bold " style={{color:"#e8e800",marginLeft:"57px",padding:"10px",fontWeight:"bold"}}>
+                  <p style ={{marginBottom:"6px"}}>{userState?.user?.username}</p>
+                 ( {userAlldata?.code})
+                </p> 
+
               {/* User Info */}
               <div className="d-flex flex-column text-center text-md-end px-3" style={{color:"white"}}>
                 {/* <p className="mb-1 fw-bold " style={{color:"#e8e800"}}>

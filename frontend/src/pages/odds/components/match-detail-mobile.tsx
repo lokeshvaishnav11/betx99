@@ -21,6 +21,7 @@ import './match-detail-mobile.css';
 
 const MatchDetailWrapper = (props: any) => {
   const [tvVisible, setTvVisible] = React.useState(false);
+   const [tvVisible2, setTvVisible2] = React.useState(false);
   const { socketUser } = useWebsocketUser();
   const userState = useAppSelector(selectUserData);
   const shared = useParams().share;
@@ -39,9 +40,13 @@ const MatchDetailWrapper = (props: any) => {
         <button type="button" aria-label="Toggle TV" onClick={() => setTvVisible(v => !v)}>
           TV      <i className="fa fa-tv" />
         </button>
+           <button type="button" aria-label="Toggle TV" onClick={() => setTvVisible2(v => !v)}>
+          TV2     <i className="fa fa-tv" />
+        </button>
       </div>
 
       {tvVisible && props.otherTv?.()}
+       {tvVisible2 && props.otherTv2?.()}
       {props.scoreBoard?.()}
       {props.t10Tv?.(250)}
 

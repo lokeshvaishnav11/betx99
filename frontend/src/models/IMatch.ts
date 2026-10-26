@@ -27,4 +27,5 @@ export default interface IMatch {
   inPlay?: boolean
   event?: any
   series?: any
+  btid?: string
 }

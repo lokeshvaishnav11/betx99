@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400&display=swap');
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+html,
+body,
+#root,
+button,
+input,
+select,
+textarea {
+  font-family: "Poppins", sans-serif !important;
+}
 :root {
   --text-primary: #08c;
   --text-secondary: #2d3e50;
