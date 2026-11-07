@@ -128,8 +128,8 @@ def validate_bet(payload, userInfo, balance, settings, matchInfo):
         # print(current_datetime < match_datetime)
         #print(current_datetime,match_datetime,current_datetime<match_datetime,"llllll")
 
-        if payload['marketName'] in ["Match Odds", "Bookmaker"] and current_datetime < match_datetime:
-            return {"message": 'failed', "notification": f"Match is not in play"}
+        # if payload['marketName'] in ["Match Odds", "Bookmaker"] and current_datetime < match_datetime:
+        #     return {"message": 'failed', "notification": f"Match is not in play"}
         if (current_datetime < match_datetime):
             # print("The match is in the future.")
             # inplay condition for check max min limmit
@@ -703,8 +703,8 @@ def placebet(betObj, userInfo):
                         "bet_on": BetOn['CASINO'],
                     }))
                     #print(matchInfo['status'],current_datetime,match_datetime,current_datetime<match_datetime,"llllll")
-                    if matchInfo['status'] == 0 :
-                        return error({}, "Match Is Not In Play")
+                    # if matchInfo['status'] == 0 :
+                    #     return error({}, "Match Is Not In Play")
 
                     markets = matchInfo
                     market = None
@@ -1184,7 +1184,7 @@ def getexposerfunctionone(user, update_status, current_bet):
                 fancy_expo += float(sum(abs(val) for val in fancypl.values()))
 
                 if(current_bet['bet_on']== "FANCY"):
-                    if(fancy_expo > 50000):
+                    if(fancy_expo > 500000):
                         return 'ffailed'
                 else:
                     if(main_expo > 300000):
