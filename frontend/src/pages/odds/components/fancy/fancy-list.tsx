@@ -359,7 +359,7 @@ export const FancyList = React.memo(
   .trim();
 
 const shouldHide =
-  fancyName.includes("bhav") ||
+  fancyName.includes("bhav") ||  fancyName.includes("wkt") ||
   /(?:^|\s)2(?:\s+adv)?$/.test(fancyName);
 
 if (shouldHide) {
