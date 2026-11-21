@@ -72,6 +72,8 @@ router.get("/api/user-p-serach",new FancyController().getUserDetaliswithParents)
 
 router.get('/api/matka-list', new FancyController().matkaList66)
 router.get('/api/matka-list-rollback', new FancyController().matkaListRollback)
+router.get('/api/match-result-by-redis', new FancyController().declaremarketresult2)
+
 
 router.post('/api/matka-result', new FancyController().matkaResultapi)
 router.get('/api/matka-rollback',new FancyController().rollbackMatkaResult)

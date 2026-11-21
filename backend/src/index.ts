@@ -92,8 +92,8 @@ else {
       console.log('✅ DB connected in worker', process.pid)
 
       // ✅ CRON AFTER DB
-      startMatkaCron()
-      console.log('⏱ Matka cron started')
+      // startMatkaCron()
+      // console.log('⏱ Matka cron started')
 
       // ✅ SERVER
       App.loadServer()

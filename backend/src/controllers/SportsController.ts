@@ -149,6 +149,153 @@ class SportsController extends ApiController {
   }
 
 
+// SportsController class ke andar add karo
+private isAutoSyncRunning = false;
+
+async saveMatchauto(): Promise<void> {
+  if (this.isAutoSyncRunning) {
+    console.log("[AUTO SYNC] Previous sync still running");
+    return;
+  }
+
+  this.isAutoSyncRunning = true;
+
+  try {
+    const matches: any[] = await Match.find({
+      active: true,
+    })
+      .select({
+        matchId: 1,
+        sportId: 1,
+        seriesId: 1,
+        name: 1,
+        matchDateTime: 1,
+        btid: 1,
+        _id: 0,
+      })
+      .lean();
+
+    if (!matches.length) {
+      console.log("[AUTO SYNC] No active matches found");
+      return;
+    }
+
+    console.log(`[AUTO SYNC] Total Matches: ${matches.length}`);
+
+    const syncData = true;
+
+    // Sync with Super Node
+    try {
+      await axios.post(
+        `${process.env.SUPER_NODE_URL}api/save-match`,
+        {
+          matches: matches.map((match: any) => ({
+            ...match,
+            matchId: match.matchId.toString(),
+            sportId: match.sportId.toString(),
+          })),
+        },
+        { timeout: 30000 }
+      );
+    } catch (error: any) {
+      console.log("[AUTO SYNC] Super Node Error:", error.message);
+    }
+
+    let success = 0;
+    let failed = 0;
+
+    for (const match of matches) {
+      try {
+        // Check match still active
+        const isActive = await Match.exists({
+          matchId: match.matchId,
+          active: true,
+        });
+
+        if (!isActive) continue;
+
+        // Match Odds
+        await this.marketesData(match, syncData);
+
+        // Fancy
+        const isFancy = await this.fancyData(match);
+
+        // Bookmaker
+        await this.bookmakermarketesData(match);
+
+        // T10
+        let isT10 = false;
+        let isT10Fancy = false;
+
+        if (match.name?.includes("T10")) {
+          isT10 = await this.t10MarketesData(match);
+          isT10Fancy = await this.t10FancyData(match);
+        }
+
+        // Check actual Bookmaker in DB
+        const bookmakerExists = await Market.exists({
+          matchId: match.matchId,
+          marketName: "Bookmaker",
+          isActive: true,
+        });
+
+        // Update match flags only
+        const updateData: any = {};
+
+        if (isFancy || isT10Fancy) {
+          updateData.isFancy = true;
+        }
+
+        if (bookmakerExists) {
+          updateData.isBookMaker = true;
+        }
+
+        if (isT10 || isT10Fancy) {
+          updateData.isT10 = true;
+        }
+
+        if (Object.keys(updateData).length) {
+          await Match.updateOne(
+            {
+              matchId: match.matchId,
+              active: true,
+            },
+            {
+              $set: updateData,
+            }
+          );
+        }
+
+        success++;
+
+        console.log(
+          `[AUTO SYNC] Match ${match.matchId} synced | Bookmaker: ${!!bookmakerExists}`
+        );
+
+      } catch (error: any) {
+        failed++;
+
+        console.error(
+          `[AUTO SYNC] Match ${match.matchId} failed:`,
+          error.message
+        );
+      }
+    }
+
+    console.log("[AUTO SYNC] Completed", {
+      total: matches.length,
+      success,
+      failed,
+    });
+
+  } catch (error: any) {
+    console.error("[AUTO SYNC] Error:", error.message);
+  } finally {
+    this.isAutoSyncRunning = false;
+  }
+}
+
+
   async saveMatchResyncCron(req: Request, res: Response): Promise<Response> {
     try {
       const market = await Market.find({ isActive: true, sportId: 4, marketName: "Bookmaker" }).distinct("matchId")
@@ -1783,3 +1930,17 @@ class SportsController extends ApiController {
   }
 }
 export default SportsController
+
+const autoSyncController = new SportsController();
+
+setInterval(async () => {
+  try {
+    console.log("========== AUTO MATCH SYNC START ==========");
+
+    await autoSyncController.saveMatchauto();
+
+    console.log("========== AUTO MATCH SYNC END ==========");
+  } catch (error) {
+    console.error("Auto Match Sync Error:", error);
+  }
+}, 5 * 60 * 1000);

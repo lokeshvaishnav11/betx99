@@ -133,7 +133,7 @@ export class FancyController extends ApiController {
   //     const matakaLimit = Parent_data?.matkalimit
 
 
-  //     const result = await Matkabet.aggregate([
+  //     const lt = await Matkabet.aggregate([
   //       {
   //         $match: {
   //           parentId: ObjectId(userData?.parentId),
@@ -2289,6 +2289,416 @@ export class FancyController extends ApiController {
       return this.fail(res, e);
     }
   };
+
+
+declaremarketresult2 = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    // ==========================================
+    // STEP 1: GET MATCH ID AND WINNER NAME
+    // ==========================================
+
+    const matchId = Number(
+      req.query.matchid || req.query.matchId
+    );
+
+    const winner = String(req.query.winner || "").trim();
+
+    if (!Number.isSafeInteger(matchId) || matchId <= 0) {
+      return this.fail(res, "Invalid matchId");
+    }
+
+    if (!winner) {
+      return this.fail(res, "Winner name is required");
+    }
+
+    // ==========================================
+    // STEP 2: NORMALIZE WINNER NAME
+    // ==========================================
+
+    const normalizeName = (name: any): string => {
+      return String(name || "")
+        .normalize("NFKC")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+    };
+
+    // ==========================================
+    // STEP 3: FIND BOOKMAKER MARKET
+    // ==========================================
+
+    const markets: any[] = await Market.find({
+      matchId: matchId,
+      marketName: /^bookmaker$/i,
+      oddsType: "bookMaker",
+    }).lean();
+
+    if (!markets.length) {
+      return this.fail(res, "Bookmaker market not found");
+    }
+
+    // ==========================================
+    // STEP 4: MATCH WINNER WITH RUNNER NAME
+    // ==========================================
+
+    const matchedMarkets: any[] = [];
+
+    for (const market of markets) {
+      const runners = Array.isArray(market.runners)
+        ? market.runners
+        : [];
+
+      const matchedRunners = runners.filter(
+        (runner: any) =>
+          normalizeName(runner.runnerName) ===
+          normalizeName(winner)
+      );
+
+      if (matchedRunners.length === 1) {
+        matchedMarkets.push({
+          market,
+          runner: matchedRunners[0],
+        });
+      }
+    }
+
+    if (matchedMarkets.length !== 1) {
+      return this.fail(
+        res,
+        "Winner not found uniquely in Bookmaker market"
+      );
+    }
+
+    const selectedMarket = matchedMarkets[0].market;
+    const selectedRunner = matchedMarkets[0].runner;
+
+    const marketId = String(selectedMarket.marketId);
+    const selectionId = Number(selectedRunner.selectionId);
+
+    if (!Number.isFinite(selectionId)) {
+      return this.fail(res, "Invalid selectionId");
+    }
+
+    // ==========================================
+    // STEP 5: CHECK ALREADY DECLARED
+    // ==========================================
+
+    if (selectedMarket.resultDelcare === "yes") {
+      if (
+        String(selectedMarket.result) ===
+        String(selectionId)
+      ) {
+        return this.success(
+          res,
+          {
+            matchId,
+            marketId,
+            selectionId,
+            winner: selectedRunner.runnerName,
+            alreadyDeclared: true,
+          },
+          "Bookmaker result already declared"
+        );
+      }
+
+      return this.fail(
+        res,
+        "Bookmaker market already declared with different winner"
+      );
+    }
+
+    console.log("BOOKMAKER RESULT FOUND:", {
+      matchId,
+      marketId,
+      selectionId,
+      winner: selectedRunner.runnerName,
+    });
+
+    // ==========================================
+    // STEP 6: GET PENDING MATCH ODDS BETS
+    // ==========================================
+
+    const userbet: any = await Bet.aggregate([
+      {
+        $match: {
+          status: "pending",
+          bet_on: BetOn.MATCH_ODDS,
+          matchId: matchId,
+          marketId: marketId,
+        },
+      },
+      {
+        $group: {
+          _id: "$userId",
+          allBets: { $push: "$$ROOT" },
+        },
+      },
+    ]);
+
+    let userIdList: any[] = [];
+    const parentIdList: any[] = [];
+
+    // ==========================================
+    // STEP 7: SETTLE USER BETS
+    // ==========================================
+
+    const declare_result = userbet.map(
+      async (Item: any) => {
+        const allbets: any[] = Item.allBets;
+
+        const settle_single = allbets.map(
+          async (
+            ItemBetList: any,
+            indexBetList: number
+          ) => {
+            let profit_type: string = "loss";
+
+            if (
+              selectionId ===
+              Number(ItemBetList.selectionId)
+            ) {
+              profit_type =
+                ItemBetList.isBack === true
+                  ? "profit"
+                  : "loss";
+            } else {
+              profit_type =
+                ItemBetList.isBack === true
+                  ? "loss"
+                  : "profit";
+            }
+
+            let profitLossAmt: number = 0;
+
+            if (ItemBetList.isBack) {
+              if (profit_type === "profit") {
+                profitLossAmt =
+                  (parseFloat(
+                    ItemBetList.odds.toString()
+                  ) - 1) *
+                  parseFloat(
+                    ItemBetList.stack.toString()
+                  );
+              } else {
+                profitLossAmt = parseFloat(
+                  ItemBetList.loss.toString()
+                );
+              }
+            } else {
+              if (profit_type === "profit") {
+                profitLossAmt = Number(
+                  ItemBetList.stack
+                );
+              } else {
+                profitLossAmt = parseFloat(
+                  ItemBetList.loss.toString()
+                );
+              }
+            }
+
+            if (selectionId === -1) {
+              profitLossAmt = 0;
+            }
+
+            const type_string: string =
+              ItemBetList.isBack ? "Back" : "Lay";
+
+            const narration: string =
+              ItemBetList.matchName +
+              " / " +
+              ItemBetList.selectionName +
+              " / " +
+              type_string +
+              " / " +
+              (selectionId === -1
+                ? "Abandoned"
+                : selectionId);
+
+            await this.addprofitlosstouser({
+              userId: ObjectId(Item._id),
+              bet_id: ObjectId(ItemBetList._id),
+              profit_loss: profitLossAmt,
+              matchId,
+              narration,
+              sportsType: ItemBetList.sportId,
+              selectionId: ItemBetList.selectionId,
+              sportId: ItemBetList.sportId,
+            });
+
+            if (indexBetList === 0) {
+              const allRatio =
+                ItemBetList.ratioStr?.allRatio || [];
+
+              allRatio.forEach(
+                (ItemParentStr: any) => {
+                  parentIdList.push(
+                    ItemParentStr.parent
+                  );
+
+                  userIdList.push(
+                    ObjectId(ItemParentStr.parent)
+                  );
+                }
+              );
+            }
+          }
+        );
+
+        await Promise.all(settle_single);
+
+        userIdList.push(ObjectId(Item._id));
+      }
+    );
+
+    await Promise.all(declare_result);
+
+    // ==========================================
+    // STEP 8: UPDATE BET STATUS
+    // ==========================================
+
+    await Bet.updateMany(
+      {
+        userId: { $in: userIdList },
+        matchId: matchId,
+        bet_on: BetOn.MATCH_ODDS,
+        marketId: marketId,
+        status: "pending",
+      },
+      {
+        $set: {
+          status: "completed",
+        },
+      }
+    );
+
+    // ==========================================
+    // STEP 9: GET UNIQUE USER IDS
+    // ==========================================
+
+    const unique = [
+      ...new Set(
+        userIdList.map((id: any) =>
+          id.toString()
+        )
+      ),
+    ].map((id: string) => ObjectId(id));
+
+    // ==========================================
+    // STEP 10: CALCULATE USER PROFIT / LOSS
+    // ==========================================
+
+    if (unique.length > 0) {
+      await Promise.all(
+        unique.map(async (userId: any) => {
+          const bets = await Bet.find({
+            userId: ObjectId(userId),
+            status: "completed",
+            marketId: marketId,
+            bet_on: BetOn.MATCH_ODDS,
+          });
+
+          const totalProfitLoss = bets.reduce(
+            (sum: number, bet: any) =>
+              sum + Number(bet.profitLoss || 0),
+            0
+          );
+
+          if (bets.length > 0) {
+            await this.cal9xbro(
+              userId,
+              totalProfitLoss,
+              bets[0].marketId +
+                bets[0].marketName,
+              matchId,
+              bets[0]._id,
+              BetOn.MATCH_ODDS
+            );
+          }
+        })
+      );
+    }
+
+    // ==========================================
+    // STEP 11: UPDATE USER ACCOUNT STATEMENT
+    // ==========================================
+
+    if (unique.length > 0) {
+      await this.updateUserAccountStatement(
+        unique,
+        parentIdList
+      );
+    }
+
+    // ==========================================
+    // STEP 12: UPDATE MATCH RESULT
+    // ==========================================
+
+    await Match.updateOne(
+      {
+        matchId: matchId,
+      },
+      {
+        $set: {
+          result_delare: true,
+          result: selectionId,
+          resultstring: selectedRunner.runnerName,
+          active: false,
+        },
+      }
+    );
+
+    // ==========================================
+    // STEP 13: UPDATE BOOKMAKER MARKET RESULT
+    // ==========================================
+
+    await Market.updateOne(
+      {
+        _id: selectedMarket._id,
+        marketId: marketId,
+        matchId: matchId,
+      },
+      {
+        $set: {
+          resultDelcare: "yes",
+          result: String(selectionId),
+        },
+      }
+    );
+
+    // ==========================================
+    // STEP 14: SUCCESS RESPONSE
+    // ==========================================
+
+    console.log("BOOKMAKER RESULT DECLARED:", {
+      matchId,
+      marketId,
+      selectionId,
+      winner: selectedRunner.runnerName,
+    });
+
+    return this.success(
+      res,
+      {
+        matchId,
+        marketId,
+        selectionId,
+        winner: selectedRunner.runnerName,
+        settledUsers: userbet.length,
+      },
+      "Bookmaker result declared successfully"
+    );
+  } catch (e: any) {
+    console.error(
+      "DECLARE BOOKMAKER RESULT ERROR:",
+      e
+    );
+
+    return this.fail(res, e);
+  }
+};
 
   declaremarketresultAuto = async (
     req: Request,
