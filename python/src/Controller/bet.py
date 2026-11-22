@@ -992,59 +992,67 @@ def checkCasinoOddsConditions(game_code, selection_id, is_back, odds_check, stac
         else:
             return "Market is Suspended hello world "
 
-def get_fancy_book(bet_list):
-    min_odds = 0
-    max_odds = 0
 
-    for index, item1 in enumerate(bet_list):
-        if index == 0:
-            min_odds = int(item1["odds"])
-            max_odds = int(item1["odds"])
-        else:
-            min_odds = min(int(item1["odds"]), min_odds)
-            max_odds = max(int(item1["odds"]), max_odds)
+def get_fancy_book(bet_list):
+    if not bet_list:
+        return 0.0
+
+    min_odds = min(int(bet["odds"]) for bet in bet_list)
+    max_odds = max(int(bet["odds"]) for bet in bet_list)
 
     min_odds = max(0, min_odds - 1)
     max_odds += 1
 
     new_show_data = {}
 
-    for item1 in bet_list:
-        if not item1["isBack"]:
-            for i in range(min_odds, max_odds + 1):
-                new_show_data[i] = new_show_data.get(i, 0)
-                if i < int(item1["odds"]):
-                    new_show_data[i] += float(item1["pnl"])
-                else:
-                    new_show_data[i] += float(item1["loss"])
-        else:
-            for i in range(min_odds, max_odds + 1):
-                new_show_data[i] = new_show_data.get(i, 0)
-                if i >= int(item1["odds"]):
-                    new_show_data[i] += float(item1["pnl"])
-                else:
-                    new_show_data[i] += float(item1["loss"])
-    print(new_show_data)
-    min_value = min(new_show_data.values())
+    for result in range(min_odds, max_odds + 1):
+        total_pnl = 0.0
 
-    return abs(min_value)
+        for bet in bet_list:
+            odds = int(bet["odds"])
+            is_back = bet["isBack"]
+
+            if is_back:
+                total_pnl += float(
+                    bet["pnl"] if result >= odds else bet["loss"]
+                )
+            else:
+                total_pnl += float(
+                    bet["pnl"] if result < odds else bet["loss"]
+                )
+
+        new_show_data[result] = total_pnl
+
+    min_value = min(new_show_data.values())
+    exposure = max(0.0, -min_value)
+
+    print("Fancy PNL:", new_show_data)
+    print("Fancy Exposure:", exposure)
+
+    return round(exposure, 2)
+
+
 
 def get_fancy_position(fancy_bet_list):
     fancy_pl = {}
-    # print(fancy_bet_list)
-    # print("fancy_bet_list")
-    for item_bets in fancy_bet_list:
-        selection_id = item_bets['selectionId']
-        check_type = True if item_bets['isBack'] else False
-        fancy_bet_list_new = [item_bet for item_bet in fancy_bet_list if
-                            item_bet['matchId'] == item_bets['matchId'] and
-                            item_bet['bet_on'] == BetOn['FANCY'] and item_bet['selectionId'] == item_bets['selectionId']]
-        if selection_id not in fancy_pl:
-            fancy_pl[selection_id] = 0
+    grouped_bets = {}
 
-        fancyposition = get_fancy_book(fancy_bet_list_new)
-        fancy_pl[selection_id] = fancyposition
+    for bet in fancy_bet_list:
+        if bet.get("bet_on") != BetOn["FANCY"]:
+            continue
+
+        key = (
+            str(bet["matchId"]),
+            str(bet["selectionId"])
+        )
+
+        grouped_bets.setdefault(key, []).append(bet)
+
+    for key, bets in grouped_bets.items():
+        fancy_pl[key] = get_fancy_book(bets)
+
     return fancy_pl
+
 
 
 def get_match_odds_exposer(betlist: List[Dict[str, Any]], match_data: Dict[str, Any]) -> Dict[str, Any]:
