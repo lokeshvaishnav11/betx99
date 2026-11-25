@@ -1775,7 +1775,7 @@ async saveMatchauto(): Promise<void> {
       const matchIds = alreadyAdded.map((match: any) => match.matchId)
 
       const response = await axios.get(
-       "http://64.227.139.183:3088/data/test",
+       "https://shayam-casino-sports-data.akamster.com/sportapi/match-list?sportsid=4",
         {
           headers: {
             "x-api-key": "1cfdeb5a7b55d02111f3e2bd324f609f2330c928",

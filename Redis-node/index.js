@@ -520,7 +520,7 @@
 //       matches.map(async (m) => {
 //         try {
 //           const res = await axios.get(
-//             `http://165.232.177.161:3088/data/v1?sportsid=4&gmid=${m.matchId}&key=lokesh8279`,
+//             `http://189.72.178.30:3088/data/v1?sportsid=4&gmid=${m.matchId}&key=lokesh8279`,
 //             {
 //           headers: {
 //             "x-api-key": "1cfdeb5a7b55d02111f3e2bd324f609f2330c928",
@@ -879,7 +879,7 @@
 // const getProviderResult = async (matchId) => {
 //   try {
 //     const { data } = await axios.get(
-//       `http://165.232.177.161:3088/data/v1?sportsid=4&gmid=${matchId}&key=lokesh8279`,
+//       `http://189.72.178.30:3088/data/v1?sportsid=4&gmid=${matchId}&key=lokesh8279`,
 //       {
 //         headers: {
 //           "x-api-key": "1cfdeb5a7b55d02111f3e2bd324f609f2330c928",
@@ -1015,7 +1015,7 @@ const MONGO_URI =
   "mongodb://chero:chero0908nitin@62.72.58.167:27017/betx?authSource=admin&replicaSet=rs0";
 
 const PROVIDER_URL =
-  "http://165.232.177.161:3088/data/v1";
+  "http://189.72.178.30:3088/data/v1";
 
 const PROVIDER_QUERY_KEY = "lokesh8279";
 
@@ -1730,7 +1730,7 @@ const groupFancyByMatch = (list) => {
 const getProviderResult = async (matchId) => {
   try {
     const { data } = await axios.get(
-      `http://165.232.177.161:3088/data/v1?sportsid=4&gmid=${matchId}&key=lokesh8279`,
+      `http://189.72.178.30:3088/data/v1?sportsid=4&gmid=${matchId}&key=lokesh8279`,
       {
         headers: {
           "x-api-key": "1cfdeb5a7b55d02111f3e2bd324f609f2330c928",
